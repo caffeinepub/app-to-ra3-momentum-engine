@@ -1,0 +1,72 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-23T17:13:29.900Z",
+  "summary": "The diff shows substantial progress implementing the RA³ Momentum Engine trading dashboard with Shoonya API integration. Most UI components and frontend hooks are implemented with mock data. However, the backend Shoonya API integration (REQ-1) is not implemented—backend uses placeholder functions instead of real API calls. Settings panel (REQ-2) exists but lacks actual backend credential storage and test connection logic. Real-time data fetching via Shoonya API is missing. Alert system (REQ-9) is partially implemented without proper backend persistence.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Replace TrueData API integration with Shoonya API integration. Implement authentication flow using user ID, vendor code, IMEI, secret API key, and TOTP secret. Generate TOTP tokens programmatically for session authentication.",
+      "reason": "Backend main.mo contains only placeholder functions (fetchPriceTimeSeries, fetchOpenInterest, etc.) that return empty arrays or zeros. No Shoonya API HTTP calls, no TOTP generation logic, no session token management, and no credential storage in backend state.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Store these credentials securely in the backend state.",
+      "reason": "SettingsPanel saves credentials to localStorage only (frontend). Backend main.mo has no stable variables or methods to receive, store, or retrieve Shoonya credentials. Test connection button simulates a delay but does not call backend.",
+      "evidence": [
+        "frontend/src/components/SettingsPanel.tsx",
+        "frontend/src/contexts/SettingsContext.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Fetch and display live option chain data for both NIFTY and BANKNIFTY showing ±5 strikes around the ATM strike. Update data every 1 minute.",
+      "reason": "useOptionChainData.ts generates mock data locally instead of fetching from Shoonya API via backend. Backend has no implementation for fetching real option chain data from Shoonya.",
+      "evidence": [
+        "frontend/src/hooks/useOptionChainData.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Alert history is persisted and displayed in the UI.",
+      "reason": "Alert history is stored in browser localStorage only. Backend has no stable storage or query methods for alerts, so alerts are not persisted across sessions or shared across clients.",
+      "evidence": [
+        "frontend/src/components/NiftyAlertPanel.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [],
+  "confidence": 0.85,
+  "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.html",
+    "frontend/src/components/AlertModal.tsx",
+    "frontend/src/components/KeyLevelsPanel.tsx",
+    "frontend/src/components/MarketBiasPanel.tsx",
+    "frontend/src/components/NiftyAlertPanel.tsx",
+    "frontend/src/components/NiftyDataTable.tsx",
+    "frontend/src/components/OptionChainTable.tsx",
+    "frontend/src/components/PCRMeter.tsx",
+    "frontend/src/components/SettingsPanel.tsx",
+    "frontend/src/components/SignalCard.tsx",
+    "frontend/src/contexts/SettingsContext.tsx",
+    "frontend/src/hooks/useAlertTrigger.ts",
+    "frontend/src/hooks/useKeyLevels.ts",
+    "frontend/src/hooks/useMarketBias.ts",
+    "frontend/src/hooks/useNiftyData.ts",
+    "frontend/src/hooks/useOptionChainData.ts",
+    "frontend/src/hooks/usePCR.ts",
+    "frontend/src/hooks/useTradingSignals.ts",
+    "frontend/src/hooks/useTrueDataAuth.ts",
+    "frontend/src/index.css",
+    "frontend/src/pages/Dashboard.tsx",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "kind": "build_request",
+  "title": "Build RA³ Momentum Engine - NSE F&O Trading Dashboard with Shoonya API",
+  "projectName": "RA³ Momentum Engine",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Replace TrueData API integration with Shoonya API integration. Implement authentication flow using user ID, vendor code, IMEI, secret API key, and TOTP secret. Generate TOTP tokens programmatically for session authentication.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "The app should fetch live option chain data using Shoonya API"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend connects to Shoonya API using provided credentials",
+        "TOTP generation works correctly for authentication",
+        "Session tokens are obtained and managed automatically",
+        "API calls are authenticated with valid session tokens"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Create a Settings panel in the frontend where users can configure Shoonya API credentials: user ID, vendor code, IMEI, secret API key, and TOTP secret. Store these credentials securely in the backend state. Include a connection test button to validate credentials.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-20",
+          "msg-21"
+        ],
+        "quotes": [
+          "include a settings panel where yI can configure these credentials"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Settings panel UI allows input of all five credential fields",
+        "Credentials are saved to backend state when submitted",
+        "Test connection button validates credentials against Shoonya API",
+        "Clear success/error feedback is shown to user"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Fetch and display live option chain data for both NIFTY and BANKNIFTY showing ±5 strikes around the ATM strike. For each strike, display: LTP, Call OI, Call OI Change, Put OI, Put OI Change, and Volume. Update data every 1 minute.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-20",
+          "msg-21"
+        ],
+        "quotes": [
+          "Show NIFTY & BANKNIFTY option chain near ATM strikes",
+          "±5 strikes",
+          "1 Minute"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Option chain displays 11 strikes total (ATM ± 5) for NIFTY",
+        "Option chain displays 11 strikes total (ATM ± 5) for BANKNIFTY",
+        "All six data fields are visible for each strike",
+        "Data refreshes automatically every 60 seconds",
+        "ATM strike is correctly identified based on current spot price"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Highlight the strikes with highest Call OI and highest Put OI in the option chain table. Highlight strikes that show sudden OI change spikes based on intelligent threshold detection (using statistical analysis of recent OI changes).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "Highlight highest Call OI and Put OI strikes",
+          "Highlight sudden OI change spikes"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Highest Call OI strike is visually distinguished",
+        "Highest Put OI strike is visually distinguished",
+        "Strikes with abnormal OI change spikes are highlighted",
+        "Highlighting updates in real-time with data refresh"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement market position analysis logic that detects: Long Build-Up (Price ↑ + OI ↑), Short Build-Up (Price ↓ + OI ↑), Short Covering (Price ↑ + OI ↓), Long Unwinding (Price ↓ + OI ↓). Display the current market bias as Bullish, Bearish, or Sideways for both NIFTY and BANKNIFTY.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "Using OI change logic detect: Long Build-Up → Price ↑ + OI ↑, Short Build-Up → Price ↓ + OI ↑, Short Covering → Price ↑ + OI ↓, Long Unwinding → Price ↓ + OI ↓"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend calculates market position based on price and OI movements",
+        "All four position types are correctly detected",
+        "Market bias (Bullish/Bearish/Sideways) is determined from position analysis",
+        "Analysis is performed separately for NIFTY and BANKNIFTY",
+        "Results update with each data refresh"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Calculate real-time Put-Call Ratio (PCR) for NIFTY and BANKNIFTY. Display PCR strength categorized as: Strong Bullish, Bullish, Neutral, Bearish, or Strong Bearish. Show a visual meter/gauge representation of the PCR strength.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "Calculate real-time PCR",
+          "Display as: Strong Bullish, Bullish, Neutral, Bearish, Strong Bearish",
+          "Show meter visualization"
+        ]
+      },
+      "acceptanceCriteria": [
+        "PCR is calculated from total Put OI divided by total Call OI",
+        "PCR is correctly categorized into five strength levels",
+        "Visual meter/gauge component displays current PCR strength",
+        "Meter updates in real-time with data refresh",
+        "Separate PCR calculations for NIFTY and BANKNIFTY"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Build a smart signal engine that generates trading signals (BUY CALL, BUY PUT, WAIT/NO TRADE) based on: Call OI resistance breaks, Put OI support breaks, sudden OI spike detection, PCR extreme levels, and momentum shift detection. Use intelligent thresholds based on statistical analysis.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-20",
+          "msg-21"
+        ],
+        "quotes": [
+          "Generate high-confidence alerts when: Call OI resistance breaks, Put OI support breaks, Sudden OI spike detected, PCR extreme levels, Momentum shift detected",
+          "Alert Thresholds - its depend on your inteligence"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Signal engine evaluates all five trigger conditions",
+        "BUY CALL signals are generated when bullish conditions align",
+        "BUY PUT signals are generated when bearish conditions align",
+        "WAIT signal is shown when no clear trade setup exists",
+        "Thresholds are automatically determined using statistical methods",
+        "Signals are generated separately for NIFTY and BANKNIFTY"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Create a Key Levels Panel that automatically identifies and displays: Strong resistance strikes (highest Call OI), Strong support strikes (highest Put OI), ATM strike, and potential breakout levels for both NIFTY and BANKNIFTY.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "Automatically identify: Strong resistance strikes (highest Call OI), Strong support strikes (highest Put OI), ATM strike, Breakout levels"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Panel displays the strike with highest Call OI as resistance",
+        "Panel displays the strike with highest Put OI as support",
+        "Current ATM strike is clearly shown",
+        "Breakout levels are calculated and displayed",
+        "All levels update automatically with data refresh",
+        "Separate key levels shown for NIFTY and BANKNIFTY"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Implement an alert system that creates and displays alerts when: Market bias changes (Bullish/Bearish/Sideways shift), Support or resistance levels break, Momentum shift occurs, or High-volume spike is detected. Store and display alert history.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "Create alerts when: Market bias changes, Support/resistance breaks, Momentum shift occurs, High-volume spike detected"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Alerts are triggered for all four event types",
+        "Each alert includes timestamp, event type, and relevant details",
+        "Alert history is persisted and displayed in the UI",
+        "New alerts are shown prominently with visual/sound notification",
+        "Alerts can be dismissed or cleared from history"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Design and implement a professional dark-themed trading dashboard UI featuring: live updating panels for option chain and analysis, bias meter visualization, signal cards for trading recommendations, alert history display, refresh countdown timer, and smooth animations throughout. Use a color scheme suitable for professional trading interfaces (avoid blue and purple unless part of data visualization).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-20"
+        ],
+        "quotes": [
+          "Use a dark professional trading UI with: live updating panels, bias meter, signal cards, alert history, refresh timer, smooth animations"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dark theme is applied consistently across all components",
+        "Professional trading aesthetic with clear information hierarchy",
+        "All panels update smoothly without jarring transitions",
+        "Refresh timer shows countdown to next update",
+        "Signal cards are prominently displayed and easy to read",
+        "Alert history is accessible and well-organized",
+        "Animations enhance UX without causing distraction"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the backend single-actor architecture",
+    "Do not edit immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui",
+    "Use only Motoko for backend logic",
+    "Use only React, TypeScript, Tailwind CSS, and Shadcn components for frontend",
+    "Data refresh interval must be exactly 1 minute (60 seconds)",
+    "Display exactly ±5 strikes (11 total) around ATM for each symbol"
+  ],
+  "nonGoals": [
+    "Integration with any API other than Shoonya API",
+    "Real-time WebSocket connections (polling every 1 minute is sufficient)",
+    "Mobile app development",
+    "Historical data analysis beyond current session",
+    "Backtesting capabilities",
+    "Order placement or execution functionality",
+    "Multi-user support or role-based access",
+    "Support for equity stocks or commodities (only NIFTY & BANKNIFTY options)"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

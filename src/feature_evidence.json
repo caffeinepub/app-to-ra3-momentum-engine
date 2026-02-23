@@ -1,0 +1,192 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-settings-panel-in-the-frontend-where-users-can-configure-shoonya-api-credentials-user-id-vendor-code-imei-secret-api-key-and-totp-secret-store-these-credentials-securely-in-the-backend-state-include-a-connection-test-button-to-validate-credentials",
+      "featureTitle": "Create a Settings panel in the frontend where users can configure Shoonya API credentials: user ID, vendor code, IMEI, secret API key, and TOTP secret. Store these credentials securely in the backend state. Include a connection test button to validate credentials.",
+      "files": [
+        "frontend/src/components/SettingsPanel.tsx",
+        "frontend/src/contexts/SettingsContext.tsx",
+        "frontend/src/hooks/useTrueDataAuth.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-fetch-and-display-live-option-chain-data-for-both-nifty-and-banknifty-showing-5-strikes-around-the-atm-strike-for-each-strike-display-ltp-call-oi-call-oi-change-put-oi-put-oi-change-and-volume-update-data-every-1-minute",
+      "featureTitle": "Fetch and display live option chain data for both NIFTY and BANKNIFTY showing ±5 strikes around the ATM strike. For each strike, display: LTP, Call OI, Call OI Change, Put OI, Put OI Change, and Volume. Update data every 1 minute.",
+      "files": [
+        "frontend/src/components/NiftyDataTable.tsx",
+        "frontend/src/hooks/useNiftyData.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-highlight-the-strikes-with-highest-call-oi-and-highest-put-oi-in-the-option-chain-table-highlight-strikes-that-show-sudden-oi-change-spikes-based-on-intelligent-threshold-detection-using-statistical-analysis-of-recent-oi-changes",
+      "featureTitle": "Highlight the strikes with highest Call OI and highest Put OI in the option chain table. Highlight strikes that show sudden OI change spikes based on intelligent threshold detection (using statistical analysis of recent OI changes).",
+      "files": [
+        "frontend/src/components/NiftyDataTable.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-market-position-analysis-logic-that-detects-long-build-up-price-oi-short-build-up-price-oi-short-covering-price-oi-long-unwinding-price-oi-display-the-current-market-bias-as-bullish-bearish-or-sideways-for-both-nifty-and-banknifty",
+      "featureTitle": "Implement market position analysis logic that detects: Long Build-Up (Price ↑ + OI ↑), Short Build-Up (Price ↓ + OI ↑), Short Covering (Price ↑ + OI ↓), Long Unwinding (Price ↓ + OI ↓). Display the current market bias as Bullish, Bearish, or Sideways for both NIFTY and BANKNIFTY.",
+      "files": [
+        "frontend/src/components/MarketBiasPanel.tsx",
+        "frontend/src/hooks/useMarketBias.ts",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-calculate-real-time-put-call-ratio-pcr-for-nifty-and-banknifty-display-pcr-strength-categorized-as-strong-bullish-bullish-neutral-bearish-or-strong-bearish-show-a-visual-meter-gauge-representation-of-the-pcr-strength",
+      "featureTitle": "Calculate real-time Put-Call Ratio (PCR) for NIFTY and BANKNIFTY. Display PCR strength categorized as: Strong Bullish, Bullish, Neutral, Bearish, or Strong Bearish. Show a visual meter/gauge representation of the PCR strength.",
+      "files": [
+        "frontend/src/components/PCRMeter.tsx",
+        "frontend/src/hooks/usePCR.ts",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-smart-signal-engine-that-generates-trading-signals-buy-call-buy-put-wait-no-trade-based-on-call-oi-resistance-breaks-put-oi-support-breaks-sudden-oi-spike-detection-pcr-extreme-levels-and-momentum-shift-detection-use-intelligent-thresholds-based-on-statistical-analysis",
+      "featureTitle": "Build a smart signal engine that generates trading signals (BUY CALL, BUY PUT, WAIT/NO TRADE) based on: Call OI resistance breaks, Put OI support breaks, sudden OI spike detection, PCR extreme levels, and momentum shift detection. Use intelligent thresholds based on statistical analysis.",
+      "files": [
+        "frontend/src/components/SignalCard.tsx",
+        "frontend/src/hooks/useTradingSignals.ts",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-key-levels-panel-that-automatically-identifies-and-displays-strong-resistance-strikes-highest-call-oi-strong-support-strikes-highest-put-oi-atm-strike-and-potential-breakout-levels-for-both-nifty-and-banknifty",
+      "featureTitle": "Create a Key Levels Panel that automatically identifies and displays: Strong resistance strikes (highest Call OI), Strong support strikes (highest Put OI), ATM strike, and potential breakout levels for both NIFTY and BANKNIFTY.",
+      "files": [
+        "frontend/src/components/KeyLevelsPanel.tsx",
+        "frontend/src/hooks/useKeyLevels.ts",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-an-alert-system-that-creates-and-displays-alerts-when-market-bias-changes-bullish-bearish-sideways-shift-support-or-resistance-levels-break-momentum-shift-occurs-or-high-volume-spike-is-detected-store-and-display-alert-history",
+      "featureTitle": "Implement an alert system that creates and displays alerts when: Market bias changes (Bullish/Bearish/Sideways shift), Support or resistance levels break, Momentum shift occurs, or High-volume spike is detected. Store and display alert history.",
+      "files": [
+        "frontend/src/components/AlertModal.tsx",
+        "frontend/src/components/NiftyAlertPanel.tsx",
+        "frontend/src/hooks/useAlertTrigger.ts",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-design-and-implement-a-professional-dark-themed-trading-dashboard-ui-featuring-live-updating-panels-for-option-chain-and-analysis-bias-meter-visualization-signal-cards-for-trading-recommendations-alert-history-display-refresh-countdown-timer-and-smooth-animations-throughout-use-a-color-scheme-suitable-for-professional-trading-interfaces-avoid-blue-and-purple-unless-part-of-data-visualization",
+      "featureTitle": "Design and implement a professional dark-themed trading dashboard UI featuring: live updating panels for option chain and analysis, bias meter visualization, signal cards for trading recommendations, alert history display, refresh countdown timer, and smooth animations throughout. Use a color scheme suitable for professional trading interfaces (avoid blue and purple unless part of data visualization).",
+      "files": [
+        "frontend/index.html",
+        "frontend/src/index.css",
+        "frontend/src/pages/Dashboard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

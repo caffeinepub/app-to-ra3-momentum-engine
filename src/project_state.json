@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Professional NSE F&O trading dashboard (RA³ Momentum Engine) with Shoonya API integration for NIFTY & BANKNIFTY options analysis, featuring live option chain, market position detection, PCR meter, smart signals, and alert system",
+  "architectural_notes": [
+    "Shoonya API authentication with automatic TOTP generation from secret key",
+    "1-minute polling interval for option chain data updates",
+    "Display ±5 strikes around ATM for NIFTY and BANKNIFTY options",
+    "OI change logic: Long Build-up (Price↑+OI↑), Short Build-up (Price↓+OI↑), Short Covering (Price↑+OI↓), Long Unwinding (Price↓+OI↓)",
+    "PCR calculation and classification into 5 levels: Strong Bullish, Bullish, Neutral, Bearish, Strong Bearish",
+    "Intelligent alert thresholds using statistical analysis for OI and volume spike detection",
+    "Dark professional trading UI with real-time data visualization and smooth animations"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-settings-panel-in-the-frontend-where-users-can-configure-shoonya-api-credentials-user-id-vendor-code-imei-secret-api-key-and-totp-secret-store-these-credentials-securely-in-the-backend-state-include-a-connection-test-button-to-validate-credentials",
+      "title": "Create a Settings panel in the frontend where users can configure Shoonya API credentials: user ID, vendor code, IMEI, secret API key, and TOTP secret. Store these credentials securely in the backend state. Include a connection test button to validate credentials.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fetch-and-display-live-option-chain-data-for-both-nifty-and-banknifty-showing-5-strikes-around-the-atm-strike-for-each-strike-display-ltp-call-oi-call-oi-change-put-oi-put-oi-change-and-volume-update-data-every-1-minute",
+      "title": "Fetch and display live option chain data for both NIFTY and BANKNIFTY showing ±5 strikes around the ATM strike. For each strike, display: LTP, Call OI, Call OI Change, Put OI, Put OI Change, and Volume. Update data every 1 minute.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-highlight-the-strikes-with-highest-call-oi-and-highest-put-oi-in-the-option-chain-table-highlight-strikes-that-show-sudden-oi-change-spikes-based-on-intelligent-threshold-detection-using-statistical-analysis-of-recent-oi-changes",
+      "title": "Highlight the strikes with highest Call OI and highest Put OI in the option chain table. Highlight strikes that show sudden OI change spikes based on intelligent threshold detection (using statistical analysis of recent OI changes).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-market-position-analysis-logic-that-detects-long-build-up-price-oi-short-build-up-price-oi-short-covering-price-oi-long-unwinding-price-oi-display-the-current-market-bias-as-bullish-bearish-or-sideways-for-both-nifty-and-banknifty",
+      "title": "Implement market position analysis logic that detects: Long Build-Up (Price ↑ + OI ↑), Short Build-Up (Price ↓ + OI ↑), Short Covering (Price ↑ + OI ↓), Long Unwinding (Price ↓ + OI ↓). Display the current market bias as Bullish, Bearish, or Sideways for both NIFTY and BANKNIFTY.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-calculate-real-time-put-call-ratio-pcr-for-nifty-and-banknifty-display-pcr-strength-categorized-as-strong-bullish-bullish-neutral-bearish-or-strong-bearish-show-a-visual-meter-gauge-representation-of-the-pcr-strength",
+      "title": "Calculate real-time Put-Call Ratio (PCR) for NIFTY and BANKNIFTY. Display PCR strength categorized as: Strong Bullish, Bullish, Neutral, Bearish, or Strong Bearish. Show a visual meter/gauge representation of the PCR strength.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-smart-signal-engine-that-generates-trading-signals-buy-call-buy-put-wait-no-trade-based-on-call-oi-resistance-breaks-put-oi-support-breaks-sudden-oi-spike-detection-pcr-extreme-levels-and-momentum-shift-detection-use-intelligent-thresholds-based-on-statistical-analysis",
+      "title": "Build a smart signal engine that generates trading signals (BUY CALL, BUY PUT, WAIT/NO TRADE) based on: Call OI resistance breaks, Put OI support breaks, sudden OI spike detection, PCR extreme levels, and momentum shift detection. Use intelligent thresholds based on statistical analysis.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-key-levels-panel-that-automatically-identifies-and-displays-strong-resistance-strikes-highest-call-oi-strong-support-strikes-highest-put-oi-atm-strike-and-potential-breakout-levels-for-both-nifty-and-banknifty",
+      "title": "Create a Key Levels Panel that automatically identifies and displays: Strong resistance strikes (highest Call OI), Strong support strikes (highest Put OI), ATM strike, and potential breakout levels for both NIFTY and BANKNIFTY.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-alert-system-that-creates-and-displays-alerts-when-market-bias-changes-bullish-bearish-sideways-shift-support-or-resistance-levels-break-momentum-shift-occurs-or-high-volume-spike-is-detected-store-and-display-alert-history",
+      "title": "Implement an alert system that creates and displays alerts when: Market bias changes (Bullish/Bearish/Sideways shift), Support or resistance levels break, Momentum shift occurs, or High-volume spike is detected. Store and display alert history.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-and-implement-a-professional-dark-themed-trading-dashboard-ui-featuring-live-updating-panels-for-option-chain-and-analysis-bias-meter-visualization-signal-cards-for-trading-recommendations-alert-history-display-refresh-countdown-timer-and-smooth-animations-throughout-use-a-color-scheme-suitable-for-professional-trading-interfaces-avoid-blue-and-purple-unless-part-of-data-visualization",
+      "title": "Design and implement a professional dark-themed trading dashboard UI featuring: live updating panels for option chain and analysis, bias meter visualization, signal cards for trading recommendations, alert history display, refresh countdown timer, and smooth animations throughout. Use a color scheme suitable for professional trading interfaces (avoid blue and purple unless part of data visualization).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Live option chain panel for NIFTY & BANKNIFTY (±5 strikes, LTP, Call/Put OI, OI Change, Volume, highlighting)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Market position analysis (Long/Short Build-up, Covering, Unwinding) with market bias indicator",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "PCR strength meter with visual indicator (Strong Bullish to Strong Bearish)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Smart signal engine (BUY CALL/PUT/WAIT) based on OI breaks, PCR extremes, momentum shifts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Key levels panel (auto-identify resistance/support strikes, ATM, breakout levels)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Alert system for market bias changes, support/resistance breaks, momentum shifts, volume spikes",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Shoonya API integration with settings panel for credentials (user ID, vendor code, IMEI, API key, TOTP secret)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Professional dark theme UI with live updating panels, smooth animations, 1-minute refresh rate",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Replace TrueData API integration with Shoonya API integration. Implement authentication flow using user ID, vendor code, IMEI, secret API key, and TOTP secret. Generate TOTP tokens programmatically for session authentication.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "RA³ Momentum Engine",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

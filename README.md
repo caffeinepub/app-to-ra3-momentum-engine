@@ -1,2 +1,3 @@
-# app-to-ra3-momentum-engine
-Exported from Caffeine project: app to RA3 Momentum Engine
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

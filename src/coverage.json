@@ -1,0 +1,197 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-23T17:13:29.903Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 10,
+    "implemented": 9,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Replace TrueData API integration with Shoonya API integration. Implement authentication flow using user ID, vendor code, IMEI, secret API key, and TOTP secret. Generate TOTP tokens programmatically for session authentication.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-10",
+        "summary": "Design and implement a professional dark-themed trading dashboard UI featuring: live updating panels for option chain and analysis, bias meter visualization, signal cards for trading recommendations, alert history display, refresh countdown timer, and smooth animations throughout. Use a color scheme suitable for professional trading interfaces (avoid blue and purple unless part of data visualization).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/Dashboard.tsx",
+          "frontend/src/index.css",
+          "frontend/tailwind.config.js",
+          "frontend/src/components/RefreshIndicator.tsx",
+          "frontend/src/App.tsx",
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/Dashboard.tsx",
+          "frontend/src/index.css",
+          "frontend/index.html"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Create a Settings panel in the frontend where users can configure Shoonya API credentials: user ID, vendor code, IMEI, secret API key, and TOTP secret. Store these credentials securely in the backend state. Include a connection test button to validate credentials.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/SettingsPanel.tsx",
+          "frontend/src/contexts/SettingsContext.tsx",
+          "frontend/src/hooks/useTrueDataAuth.ts",
+          "frontend/src/hooks/useShoonya.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/SettingsPanel.tsx",
+          "frontend/src/contexts/SettingsContext.tsx",
+          "frontend/src/hooks/useTrueDataAuth.ts"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Fetch and display live option chain data for both NIFTY and BANKNIFTY showing ±5 strikes around the ATM strike. For each strike, display: LTP, Call OI, Call OI Change, Put OI, Put OI Change, and Volume. Update data every 1 minute.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/NiftyDataTable.tsx",
+          "frontend/src/hooks/useNiftyData.ts",
+          "frontend/src/hooks/useRefreshTimer.ts",
+          "frontend/src/components/RefreshIndicator.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/NiftyDataTable.tsx",
+          "frontend/src/hooks/useNiftyData.ts"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Highlight the strikes with highest Call OI and highest Put OI in the option chain table. Highlight strikes that show sudden OI change spikes based on intelligent threshold detection (using statistical analysis of recent OI changes).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/NiftyDataTable.tsx",
+          "frontend/src/utils/oiAnalysis.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/NiftyDataTable.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Implement market position analysis logic that detects: Long Build-Up (Price ↑ + OI ↑), Short Build-Up (Price ↓ + OI ↑), Short Covering (Price ↑ + OI ↓), Long Unwinding (Price ↓ + OI ↓). Display the current market bias as Bullish, Bearish, or Sideways for both NIFTY and BANKNIFTY.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/MarketBiasPanel.tsx",
+          "frontend/src/hooks/useMarketBias.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/MarketBiasPanel.tsx",
+          "frontend/src/hooks/useMarketBias.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Calculate real-time Put-Call Ratio (PCR) for NIFTY and BANKNIFTY. Display PCR strength categorized as: Strong Bullish, Bullish, Neutral, Bearish, or Strong Bearish. Show a visual meter/gauge representation of the PCR strength.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/PCRMeter.tsx",
+          "frontend/src/hooks/usePCR.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/PCRMeter.tsx",
+          "frontend/src/hooks/usePCR.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Build a smart signal engine that generates trading signals (BUY CALL, BUY PUT, WAIT/NO TRADE) based on: Call OI resistance breaks, Put OI support breaks, sudden OI spike detection, PCR extreme levels, and momentum shift detection. Use intelligent thresholds based on statistical analysis.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/SignalCard.tsx",
+          "frontend/src/hooks/useTradingSignals.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/SignalCard.tsx",
+          "frontend/src/hooks/useTradingSignals.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "Create a Key Levels Panel that automatically identifies and displays: Strong resistance strikes (highest Call OI), Strong support strikes (highest Put OI), ATM strike, and potential breakout levels for both NIFTY and BANKNIFTY.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/KeyLevelsPanel.tsx",
+          "frontend/src/hooks/useKeyLevels.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/KeyLevelsPanel.tsx",
+          "frontend/src/hooks/useKeyLevels.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Implement an alert system that creates and displays alerts when: Market bias changes (Bullish/Bearish/Sideways shift), Support or resistance levels break, Momentum shift occurs, or High-volume spike is detected. Store and display alert history.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/NiftyAlertPanel.tsx",
+          "frontend/src/components/AlertModal.tsx",
+          "frontend/src/hooks/useAlertTrigger.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/NiftyAlertPanel.tsx",
+          "frontend/src/components/AlertModal.tsx",
+          "frontend/src/hooks/useAlertTrigger.ts",
+          "frontend/src/pages/Dashboard.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/index.html",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/AlertModal.tsx",
+    "frontend/src/components/KeyLevelsPanel.tsx",
+    "frontend/src/components/MarketBiasPanel.tsx",
+    "frontend/src/components/NiftyAlertPanel.tsx",
+    "frontend/src/components/NiftyDataTable.tsx",
+    "frontend/src/components/OptionChainTable.tsx",
+    "frontend/src/components/PCRMeter.tsx",
+    "frontend/src/components/SettingsPanel.tsx",
+    "frontend/src/components/SignalCard.tsx",
+    "frontend/src/contexts/SettingsContext.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useAlertTrigger.ts",
+    "frontend/src/hooks/useKeyLevels.ts",
+    "frontend/src/hooks/useMarketBias.ts",
+    "frontend/src/hooks/useNiftyData.ts",
+    "frontend/src/hooks/useOptionChainData.ts",
+    "frontend/src/hooks/usePCR.ts",
+    "frontend/src/hooks/useTradingSignals.ts",
+    "frontend/src/hooks/useTrueDataAuth.ts",
+    "frontend/src/index.css",
+    "frontend/src/pages/Dashboard.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

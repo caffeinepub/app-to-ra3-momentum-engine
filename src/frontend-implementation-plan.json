@@ -1,0 +1,286 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "RA³ Momentum Engine - Frontend Implementation for Shoonya API Integration",
+  "requirements": [
+    {
+      "id": "REQ-2",
+      "summary": "Create Settings panel for Shoonya API credentials configuration with connection testing",
+      "acceptanceCriteria": [
+        "Settings panel UI allows input of all five credential fields",
+        "Credentials are saved to backend state when submitted",
+        "Test connection button validates credentials against Shoonya API",
+        "Clear success/error feedback is shown to user"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/SettingsPanel.tsx",
+          "operation": "modify",
+          "description": "Replace existing TrueData API bearer token fields with Shoonya API credential fields: user ID, vendor code, IMEI, secret API key, and TOTP secret. Update form validation to handle all five fields. Modify the connection test logic to call backend validation function for Shoonya credentials. Update localStorage keys to store Shoonya credentials instead of TrueData token."
+        },
+        {
+          "path": "frontend/src/contexts/SettingsContext.tsx",
+          "operation": "modify",
+          "description": "Replace TrueData token state with Shoonya credential state (userId, vendorCode, imei, apiKey, totpSecret). Update localStorage persistence to save/load Shoonya credentials. Remove trueDataService initialization. Add methods to update and retrieve Shoonya credentials."
+        },
+        {
+          "path": "frontend/src/hooks/useTrueDataAuth.ts",
+          "operation": "delete",
+          "description": "Remove TrueData authentication hook as it is no longer needed with Shoonya API integration."
+        },
+        {
+          "path": "frontend/src/hooks/useShoonya.ts",
+          "operation": "create",
+          "description": "Create hook for managing Shoonya API credentials and connection testing. Provide methods to save credentials to backend via actor, test connection by calling backend validation function, and retrieve credential validation status."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Display live option chain data for NIFTY and BANKNIFTY with ±5 ATM strikes and 1-minute refresh",
+      "acceptanceCriteria": [
+        "Option chain displays 11 strikes total (ATM ± 5) for NIFTY",
+        "Option chain displays 11 strikes total (ATM ± 5) for BANKNIFTY",
+        "All six data fields are visible for each strike",
+        "Data refreshes automatically every 60 seconds",
+        "ATM strike is correctly identified based on current spot price"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/NiftyDataTable.tsx",
+          "operation": "modify",
+          "description": "Update to display both NIFTY and BANKNIFTY option chains side by side or in tabs. Modify table columns to show: Strike, LTP, Call OI, Call OI Change, Put OI, Put OI Change, and Volume. Ensure the table displays exactly 11 strikes (ATM ± 5) for each symbol. Update the data fetching hook reference to use the new multi-symbol hook."
+        },
+        {
+          "path": "frontend/src/hooks/useNiftyData.ts",
+          "operation": "modify",
+          "description": "Rename to useOptionChainData and expand to fetch data for both NIFTY and BANKNIFTY. Maintain 60-second refetch interval. Fetch ATM strikes using backend fetchATMStrikes function and retrieve ±5 strikes around ATM. Calculate OI changes by comparing with previous data. Return structured data including all six required fields for each strike."
+        },
+        {
+          "path": "frontend/src/hooks/useRefreshTimer.ts",
+          "operation": "modify",
+          "description": "Ensure timer is synchronized with the 60-second data refresh interval for option chain updates. Add callbacks to reset timer when manual refresh is triggered."
+        },
+        {
+          "path": "frontend/src/components/RefreshIndicator.tsx",
+          "operation": "modify",
+          "description": "Update to show countdown for option chain data refresh. Display last update timestamp for both NIFTY and BANKNIFTY data sources."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Highlight strikes with highest Call/Put OI and sudden OI change spikes",
+      "acceptanceCriteria": [
+        "Highest Call OI strike is visually distinguished",
+        "Highest Put OI strike is visually distinguished",
+        "Strikes with abnormal OI change spikes are highlighted",
+        "Highlighting updates in real-time with data refresh"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/NiftyDataTable.tsx",
+          "operation": "modify",
+          "description": "Add conditional row/cell styling to highlight strikes with highest Call OI and highest Put OI using distinct background colors or borders. Implement spike detection logic in the frontend by calculating statistical thresholds from recent OI changes (e.g., changes exceeding 2 standard deviations). Apply visual highlighting (warning colors, icons) to strikes showing abnormal OI spikes. Ensure highlights update dynamically with each data refresh."
+        },
+        {
+          "path": "frontend/src/utils/oiAnalysis.ts",
+          "operation": "create",
+          "description": "Create utility functions for OI analysis including: identifying highest Call/Put OI strikes, calculating statistical thresholds for spike detection (mean + 2*std deviation), and determining which strikes exceed spike thresholds. Export functions for use in table component."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Display market position analysis and bias (Bullish/Bearish/Sideways) for NIFTY and BANKNIFTY",
+      "acceptanceCriteria": [
+        "Backend calculates market position based on price and OI movements",
+        "All four position types are correctly detected",
+        "Market bias (Bullish/Bearish/Sideways) is determined from position analysis",
+        "Analysis is performed separately for NIFTY and BANKNIFTY",
+        "Results update with each data refresh"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/MarketBiasPanel.tsx",
+          "operation": "create",
+          "description": "Create panel component to display market bias for NIFTY and BANKNIFTY. Show the current bias as Bullish, Bearish, or Sideways with color-coded badges. Display the detected position type (Long Build-Up, Short Build-Up, Short Covering, Long Unwinding) with explanatory icons. Fetch analysis data from backend using market dynamics data. Update display every 60 seconds."
+        },
+        {
+          "path": "frontend/src/hooks/useMarketBias.ts",
+          "operation": "create",
+          "description": "Create hook to fetch market position analysis from backend. Call backend to retrieve MarketDynamics for both symbols and interpret the position signals. Return structured data with bias (Bullish/Bearish/Sideways) and position type for each symbol. Use React Query with 60-second refetch interval."
+        },
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Add MarketBiasPanel to the dashboard layout, positioned prominently above or alongside the option chain tables. Ensure panel integrates with the dark theme and refresh timer."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Display real-time PCR with strength categorization and visual meter for NIFTY and BANKNIFTY",
+      "acceptanceCriteria": [
+        "PCR is calculated from total Put OI divided by total Call OI",
+        "PCR is correctly categorized into five strength levels",
+        "Visual meter/gauge component displays current PCR strength",
+        "Meter updates in real-time with data refresh",
+        "Separate PCR calculations for NIFTY and BANKNIFTY"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/PCRMeter.tsx",
+          "operation": "create",
+          "description": "Create visual meter/gauge component to display PCR strength. Use gradient or segmented bar visualization with five zones: Strong Bullish, Bullish, Neutral, Bearish, Strong Bearish. Color-code each zone appropriately. Display numeric PCR value and current strength category. Accept PCR value and strength as props. Use Shadcn UI Progress or custom SVG gauge for visualization."
+        },
+        {
+          "path": "frontend/src/hooks/usePCR.ts",
+          "operation": "create",
+          "description": "Create hook to fetch PCR data from backend for both NIFTY and BANKNIFTY. Call backend fetchPCR and fetchPCRStrength functions. Return PCR numeric value and strength category for each symbol. Use React Query with 60-second refetch interval synchronized with option chain updates."
+        },
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Add PCRMeter components for both NIFTY and BANKNIFTY to the dashboard layout. Position meters in a dedicated section visible alongside market bias panel. Pass PCR data from usePCR hook to meter components."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Display smart trading signals (BUY CALL, BUY PUT, WAIT) based on multi-factor analysis",
+      "acceptanceCriteria": [
+        "Signal engine evaluates all five trigger conditions",
+        "BUY CALL signals are generated when bullish conditions align",
+        "BUY PUT signals are generated when bearish conditions align",
+        "WAIT signal is shown when no clear trade setup exists",
+        "Thresholds are automatically determined using statistical methods",
+        "Signals are generated separately for NIFTY and BANKNIFTY"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/SignalCard.tsx",
+          "operation": "create",
+          "description": "Create card component to display trading signals for each symbol. Show signal action (BUY CALL, BUY PUT, WAIT/NO TRADE), urgency level, confidence indicator, and supporting rationale (which conditions triggered the signal). Use color-coded styling: green for BUY CALL, red for BUY PUT, gray for WAIT. Include timestamp and expiry information. Design for professional trading interface with clear call-to-action styling."
+        },
+        {
+          "path": "frontend/src/hooks/useTradingSignals.ts",
+          "operation": "create",
+          "description": "Create hook to fetch trading signals from backend. Call backend calculateTradeSignals function with MarketDynamics data for each symbol. Return array of Signal objects containing action, urgency, message, price, symbol, and expiry. Use React Query with 60-second refetch interval. Handle multiple signals per symbol and prioritize by urgency."
+        },
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Add prominent SignalCard section to dashboard displaying current trading signals for NIFTY and BANKNIFTY. Position signal cards at the top of the dashboard for immediate visibility. Ensure cards stand out visually and update in real-time with data refresh."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Display Key Levels Panel showing resistance, support, ATM, and breakout levels",
+      "acceptanceCriteria": [
+        "Panel displays the strike with highest Call OI as resistance",
+        "Panel displays the strike with highest Put OI as support",
+        "Current ATM strike is clearly shown",
+        "Breakout levels are calculated and displayed",
+        "All levels update automatically with data refresh",
+        "Separate key levels shown for NIFTY and BANKNIFTY"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/KeyLevelsPanel.tsx",
+          "operation": "create",
+          "description": "Create panel component displaying key levels for both NIFTY and BANKNIFTY. Show four sections: Strong Resistance (highest Call OI strike), Strong Support (highest Put OI strike), ATM Strike, and Potential Breakout Levels. Fetch data using backend fetchKeyLevels and fetchATMStrikes functions. Display strikes as labeled badges with color coding (resistance: red, support: green, ATM: yellow, breakout: orange). Include price distance from current spot for each level. Update every 60 seconds."
+        },
+        {
+          "path": "frontend/src/hooks/useKeyLevels.ts",
+          "operation": "create",
+          "description": "Create hook to fetch key levels from backend for both symbols. Call backend fetchKeyLevels and fetchATMStrikes functions. Process returned strike arrays to identify resistance, support, ATM, and breakout levels. Return structured data with labeled levels and current spot prices. Use React Query with 60-second refetch interval."
+        },
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Add KeyLevelsPanel to dashboard layout, positioned near PCR meters or market bias panel for easy reference. Ensure panel integrates with overall dashboard grid and dark theme styling."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Implement alert system for market events with history display",
+      "acceptanceCriteria": [
+        "Alerts are triggered for all four event types",
+        "Each alert includes timestamp, event type, and relevant details",
+        "Alert history is persisted and displayed in the UI",
+        "New alerts are shown prominently with visual/sound notification",
+        "Alerts can be dismissed or cleared from history"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/NiftyAlertPanel.tsx",
+          "operation": "modify",
+          "description": "Expand existing alert panel to handle four alert types: Market bias changes, Support/resistance breaks, Momentum shifts, High-volume spikes. Add visual indicators and icons for each alert type. Maintain existing localStorage persistence (limit to 50 alerts) and clear functionality. Display alerts in reverse chronological order with color-coded event type badges."
+        },
+        {
+          "path": "frontend/src/components/AlertModal.tsx",
+          "operation": "modify",
+          "description": "Update modal to display new alert types (bias change, level break, momentum shift, volume spike) with appropriate styling. Maintain existing auto-dismiss after 10 seconds. Add optional sound notification trigger when new alerts appear. Ensure modal supports both NIFTY and BANKNIFTY alerts."
+        },
+        {
+          "path": "frontend/src/hooks/useAlertTrigger.ts",
+          "operation": "modify",
+          "description": "Expand alert trigger logic to monitor four event types: 1) Market bias changes (compare previous vs current bias from market dynamics), 2) Support/resistance breaks (compare current price vs key levels), 3) Momentum shifts (detect position type changes), 4) High-volume spikes (statistical threshold on volume). Generate alert objects with type, timestamp, symbol, and event details. Store alerts in localStorage and trigger modal display for new alerts."
+        },
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Ensure AlertModal and NiftyAlertPanel are properly integrated with new alert types. Pass alert trigger data from useAlertTrigger hook to both components. Verify alert history sidebar displays all event types."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Implement professional dark-themed trading dashboard UI with live panels, animations, and refresh timer",
+      "acceptanceCriteria": [
+        "Dark theme is applied consistently across all components",
+        "Professional trading aesthetic with clear information hierarchy",
+        "All panels update smoothly without jarring transitions",
+        "Refresh timer shows countdown to next update",
+        "Signal cards are prominently displayed and easy to read",
+        "Alert history is accessible and well-organized",
+        "Animations enhance UX without causing distraction"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/Dashboard.tsx",
+          "operation": "modify",
+          "description": "Redesign dashboard layout for professional trading interface. Organize components in grid: Signal cards at top (most prominent), option chain tables in center, PCR meters and market bias panel in sidebar, key levels panel below signals, alert history in collapsible right sidebar, refresh timer in header. Use Shadcn Card components for containment. Add smooth fade-in animations for data updates. Ensure consistent spacing and dark theme application. Remove or minimize hero section to focus on data."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Update CSS variables and theme colors to use professional trading color scheme suitable for dark mode. Avoid blue and purple for primary UI elements (reserve for data visualization). Use neutral grays, accent greens for bullish, reds for bearish, yellows for warnings. Add transition utilities for smooth animations. Ensure all custom scrollbar styling works with dark theme."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend Tailwind theme with trading-specific colors: success green, danger red, warning yellow, neutral grays. Add custom animation utilities for panel updates and signal transitions. Configure chart colors for data visualization. Ensure dark mode is default and optimized for financial data display."
+        },
+        {
+          "path": "frontend/src/components/RefreshIndicator.tsx",
+          "operation": "modify",
+          "description": "Enhance refresh indicator styling to fit professional trading UI. Display countdown timer prominently with progress bar or circular countdown. Show last update timestamp for all data sources. Add manual refresh button. Style with subtle animations to indicate active refresh state."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Verify ThemeProvider is set to dark mode by default. Ensure QueryClient refetch interval remains at 60 seconds. Update app title to 'RA³ Momentum Engine' in document head via useEffect or index.html reference."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Update page title from 'Nifty Options Monitor' to 'RA³ Momentum Engine'. Ensure favicon and meta tags reflect the professional trading application branding."
+        }
+      ]
+    }
+  ]
+}
